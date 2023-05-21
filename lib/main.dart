@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobiledev_flutter_1/view/day2_page.dart';
+import 'package:mobiledev_flutter_1/view/day3_page.dart';
+import 'package:mobiledev_flutter_1/view/profile_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,30 +13,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int selectedPage = 0;
+
+  final pages = [
+    const Day2Page(),
+    const ProfilePage(),
+    const Day3Page(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0XFFf97e72),
-        title: const Text(
-          'Unity',
-          style: TextStyle(
-            fontFamily: 'Times New Roman',
-            fontSize: 25,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text('Halo Guys'),
+    return SafeArea(
+      child: Scaffold(
+        body: pages[selectedPage],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedPage,
+            onTap: (index) {
+              setState(() {
+                selectedPage = index;
+              });
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: 'Profile'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person_2_outlined), label: 'Other'),
+            ]),
       ),
     );
   }
